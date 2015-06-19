@@ -4,7 +4,7 @@ author: "Zach Diener"
 date: "June 19, 2015"
 output: html_document
 ---
-
+#Haar Wavelet Example
 ```{r}
 library(wavethresh)
 library(gplots)
@@ -44,7 +44,6 @@ nrows <- nrow(Averages)
 rownames(Averages) <- 0: (nrow(Averages)-1)
 colnames(Averages) <- 1:ncol(Averages)
 Averages[1,] <- s
-
 
 
 #Calculate Averages
@@ -106,5 +105,34 @@ heatmap.2(Differences,
   )
 
 plot(s, main = "Simulation Data", xlab= "Time", ylab="Brightness Level", xlim=c(7,70), ylim= c(14,28),type = "l", col = "red")
+```
+
+#Daubechies Example
+```{r}
+df_1<-as.vector(as.matrix(df[31,]))
+numlevels <- 4
+signallength <- length(df)
+
+A <- matrix(0,nrow=numlevels,ncol=signallength)
+
+for (i in 1:4) {
+  f <- wt.filter(filter="d4", modwt=FALSE, level=i)
+  a <- convolve(df_1, f@g, conj=FALSE,type="open")
+  A[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(a)-(2^i)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))) : (length(a)-1)]
+}
+
+Arow_1 <- A[1,2:68]
+sigma <- (mad(Arow_1))/.6745
+#print(mad(Arow_1))
+Thresh<- sigma * (sqrt(2* log(length(Arow_1))))
+
+for (i in 1:4){
+  high <- A[i,] >= Thresh
+  mid <- A[i,] < Thresh
+  low <- A[i,] <= -Thresh
+  A[i,high] <- (A[i,high] <- (A[i,high]-Thresh))
+  A[i,mid] <- (A[i,mid] <- 0)
+  A[i,low] <- (A[i,low] <- (A[i,low]+Thresh))
+}
 
 ```
