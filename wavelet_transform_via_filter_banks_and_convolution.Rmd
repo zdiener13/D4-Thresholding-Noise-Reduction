@@ -1,0 +1,102 @@
+---
+title: "Wavelet transform via filter banks and convolution"
+author: "Paul Pearson"
+date: "June 12, 2015"
+output: html_document
+---
+
+# Haar wavelet example
+
+```{r}
+# test signal
+s <- c(8,20,32,36,32,20,8,4)
+
+# load the wavelets library to get the "filter banks" at various levels
+library(wavelets)
+
+haar1 <- wt.filter(filter="d2", modwt=FALSE, level=1)
+
+#str(haar1)
+#haar1@h # apparently, haar1 is an S4 object with slots, so instead of using haar1$h we need to use haar1@h to access the values in a particular slot
+
+# It looks like the author of the wavelets package has the names of h and g reversed (blergh!)
+
+# level 1 averages and differences
+convolve(s, haar1@g, conj=FALSE,type="open") / sqrt(2)
+convolve(s, haar1@h, conj=FALSE,type="open") / sqrt(2) # need /sqrt(2) to get back to regular averages
+
+# level 2 averages and differences
+haar2 <- wt.filter(filter="d2", modwt=FALSE, level=2)
+convolve(s, haar2@g, conj=FALSE,type="open") / sqrt(2)^2
+convolve(s, haar2@h, conj=FALSE,type="open") / sqrt(2)^2 
+
+# level 3 averages and differences
+haar3 <- wt.filter(filter="d2", modwt=FALSE, level=3)
+convolve(s, haar3@g, conj=FALSE,type="open") / sqrt(2)^3
+convolve(s, haar3@h, conj=FALSE,type="open") / sqrt(2)^3
+
+# averages
+a1 <- convolve(s, haar1@g, conj=FALSE,type="open") / sqrt(2)
+a2 <- convolve(s, haar2@g, conj=FALSE,type="open") / sqrt(2)^2
+a3 <- convolve(s, haar3@g, conj=FALSE,type="open") / sqrt(2)^3
+
+A <- matrix(0,nrow=3,ncol=8)
+A[1,] <- a1[ (length(a1)-7) : length(a1) ]
+A[2,] <- a2[ (length(a2)-7) : length(a2) ]
+A[3,] <- a3[ (length(a3)-7) : length(a3) ]
+
+A
+
+# differences
+d1 <- convolve(s, haar1@h, conj=FALSE,type="open") / sqrt(2)
+d2 <- convolve(s, haar2@h, conj=FALSE,type="open") / sqrt(2)^2
+d3 <- convolve(s, haar3@h, conj=FALSE,type="open") / sqrt(2)^3
+
+D <- matrix(0,nrow=3,ncol=8)
+D[1,] <- d1[ (length(d1)-7) : length(d1) ]
+D[2,] <- d2[ (length(d2)-7) : length(d2) ]
+D[3,] <- d3[ (length(d3)-7) : length(d3) ]
+
+
+D
+
+```
+
+# Daubechies 4 wavelet example
+
+```{r}
+# test signal
+#s <- c(8,20,32,36,32,20,8,4)
+t <- c(1:32) * 2 * pi / 32
+s <- cos(t)
+
+numlevels <- 3
+signallength <- length(s)
+
+A <- matrix(0,nrow=numlevels,ncol=signallength)
+D <- matrix(0,nrow=numlevels,ncol=signallength)
+
+for (i in 1:numlevels) {
+  
+  f <- wt.filter(filter="d4", modwt=FALSE, level=i)
+  a <- convolve(s, f@g, conj=FALSE,type="open")
+  d <- convolve(s, f@h, conj=FALSE,type="open")
+  print(length(a))
+  #A[i,] <- a[ (length(a)-signallength+1) : length(a) ]
+  #D[i,] <- d[ (length(d)-signallength+1) : length(d) ]
+  
+}
+
+options(digits=3)
+
+# averages
+A
+
+# differences
+D
+
+image(t(D))
+plot(t,s,type="l")
+```
+
+
