@@ -36,7 +36,7 @@ df <- as.data.frame(read.csv("TestCases.csv", header=T)) # read in data frame
 j= c(1:6)
 
 #input the original signal 
-s <- as.vector(as.matrix((df[1,])))
+s <- as.vector(as.matrix((df[31,])))
 
 #Averages<-t(Averages)
 Averages = matrix(0,length(j),length(s))
@@ -127,19 +127,19 @@ for (i in 1:4) {
 }
 
 #Set Threshold Value
-#Arow_1 <- A[1,4:70]
-#sigma <- (mad(Arow_1))/.6745
-#Thresh<- sigma * (sqrt(2* log(length(Arow_1))))
+Arow_1 <- A[1,4:70]
+sigma <- (mad(Arow_1))/.6745
+Thresh<- sigma * (sqrt(2* log(length(Arow_1))))
 
 #Execute Threshold
-#for (i in 1:4){
-  #high <- A[i,] >= Thresh
- # mid <- A[i,] < Thresh
-  #low <- A[i,] <= -Thresh
- # A[i,high] <- (A[i,high] <- (A[i,high]))
- # A[i,mid] <- (A[i,mid] <- 0)
-  #A[i,low] <- (A[i,low] <- (A[i,low]+Thresh))
-#}
+for (i in 1:4){
+  high <- A[i,] >= Thresh
+  mid <- A[i,] < Thresh
+  low <- A[i,] <= -Thresh
+  A[i,high] <- (A[i,high] <- (A[i,high]))
+  A[i,mid] <- (A[i,mid] <- 0)
+  A[i,low] <- (A[i,low] <- (A[i,low]+Thresh))
+}
 
 #Construct Differences
 D=matrix( c(0) , nrow=numlevels , ncol=signallength)
@@ -164,10 +164,48 @@ for(i in 1:4){
 print(A)
 print(D)
 
+#Unthresholded Arrays
+A_unthresh <- matrix(0,nrow=numlevels,ncol=signallength)
+D_unthresh <- matrix(0,nrow=numlevels,ncol=signallength)
+
+for (i in 1:4) {
+  
+  f <- wt.filter(filter="d4", modwt=FALSE, level=i)
+  a <- convolve(df_1, f@g, conj=FALSE,type="open")
+  d <- convolve(df_1, f@h, conj=FALSE,type="open")
+ 
+  A_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(a)-(2^i)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))) : (length(a)-1)]
+  D_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(d)-(2^i)-(3*((2^(i))-1))))] <- d[(2*(3*((2^(i))-1))) : (length(d)-1)]
+   
+}
+
 #Plotting The Results
 D<- abs(D)
 heatmap.2(D,
-  main = "Heatmap ",
+  main = "Threshold Heatmap ",
+  xlab = "Time",
+  ylab = "Frequency",
+  key=T, 
+  keysize=1.5, 
+  key.title = NA,
+  symkey=TRUE, 
+  notecol="black",            
+  density.info="histogram",     
+  trace="none",               
+  margins =c(4,3),            
+  dendrogram="none",           
+  Rowv = FALSE,
+  Colv = FALSE,
+  srtCol = 1,
+  cexRow = 1.0,
+  breaks= 63,
+  adjCol = c(0.5,1),
+  col= grey.colors(62, start= 0.9, end=0.1, gamma=.5)
+  )
+
+D_unthresh<- abs(D_unthresh)
+heatmap.2(D_unthresh,
+  main = "Noisey Heatmap ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
