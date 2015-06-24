@@ -6,9 +6,11 @@ output: html_document
 ---
 #Haar Wavelet Example
 ```{r}
-library(wavethresh)
+library(wavethresh) 
 library(gplots)
 library(wavelets)
+
+set.seed(5)
 
 rm(list=ls())	#Clear data
 
@@ -117,13 +119,15 @@ df_1<-as.vector(as.matrix(df[31,]))
 numlevels <- 4
 signallength <- length(df)
 
+#df_1<- c(8,2,1,4,6,7,8,3,2,1, rep(0,60))
+
 #Construct Averages
 A <- matrix(0,nrow=numlevels,ncol=signallength)
 
 for (i in 1:4) {
   f <- wt.filter(filter="d4", modwt=FALSE, level=i)
-  a <- convolve(df_1, f@g, conj=FALSE,type="open")
-  A[i,c((((3*(2^(i)-1))+1)):(length(a)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))) : (length(a)-1)]
+  a <- convolve(df_1, rev(f@g), conj=FALSE,type="open")
+  A[i,c((((3*(2^(i)-1))+1)):(length(a)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))+1) : (length(a))]
 }
 
 #Set Threshold Value
@@ -154,10 +158,14 @@ g1 <- -h2
 g2 <- h1
 g3 <- -h0
 
-for(i in 1:4){
+for (n in 4:70){
+    D[1,n-(ceiling((4-1)*.5))] <- (g0*df_1[(n-3*2^(0))])+ (g1*df_1[(n-2*2^(0))])+(g2*df_1[(n-2^(0))])+(g3*df_1[n])
+}
+
+for(i in 2:4){
   m <- 3*(2^(i)-1)+1
   for (n in m:70){
-    D[i,(n-(ceiling((m-1)*.5)))] <- (g3*A[i,(n-3*2^(i-1))])+ (g2*A[i,(n-2*2^(i-1))])+(g3*A[i,(n-2^(i-1))])+(g0*A[i,n])
+    D[i,(n-(ceiling((m-1)*.5)))] <- (g0*A[i-1,(n-3*2^(i-1))])+ (g1*A[i-1,(n-2*2^(i-1))])+(g2*A[i-1,(n-2^(i-1))])+(g3*A[i-1,n])
     }
 }
 
@@ -171,11 +179,13 @@ D_unthresh <- matrix(0,nrow=numlevels,ncol=signallength)
 for (i in 1:4) {
   
   f <- wt.filter(filter="d4", modwt=FALSE, level=i)
-  a <- convolve(df_1, f@g, conj=FALSE,type="open")
-  d <- convolve(df_1, f@h, conj=FALSE,type="open")
+  a <- convolve(df_1, rev(f@g), conj=FALSE,type="open")
+  d <- convolve(df_1, rev(f@h), conj=FALSE,type="open")
  
-  A_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(a)-(2^i)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))) : (length(a)-1)]
-  D_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(d)-(2^i)-(3*((2^(i))-1))))] <- d[(2*(3*((2^(i))-1))) : (length(d)-1)]
+  m <- 3*(2^(i)-1)+1
+  
+  A_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(a)-(2^i)-(3*((2^(i))-1))))] <- a[(2*(3*((2^(i))-1))+1) : (length(a))]
+  D_unthresh[i,c((((3*(2^(i)-1))+1)-(2^i)):(length(d)-(2^i)-(3*((2^(i))-1))))] <- d[(2*(3*((2^(i))-1))+1) : (length(d))]
    
 }
 
