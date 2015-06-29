@@ -87,7 +87,7 @@ for (j in 1:((nrows)-1)){
 #Plotting Results 
 Differences<- abs(Differences)
 heatmap.2(Differences,
-  main = "Heatmap ",
+  main = "Heatmap Soft Thresholding ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
@@ -112,7 +112,7 @@ plot(s, main = "Simulation Data", xlab= "Time", ylab="Brightness Level", xlim=c(
 ```
 
 
-#Data Prep For Neural Network (3 X 3)
+#Data Prep For Neural Network (Kirsch Operators)
 ```{r}
 horiz<- t(as.matrix(c(5,5,5,-3,0,-3,-3,-3,-3)))
 
@@ -133,7 +133,7 @@ for(n in 2:4){
 
 Differences<- abs(Differences3X3)
 heatmap.2(Differences,
-  main = "Heatmap ",
+  main = "3x3 Kirsch ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
@@ -154,8 +154,32 @@ heatmap.2(Differences,
   col= grey.colors(62, start= 0.9, end=0.1, gamma=.7)
   )
 
-inputvector <- (colSums(Differences3X3[2:4,])/3)
-print(inputvector)
+Differences3X3[2,] <- Differences3X3[1,]
+Differences3X3[4,] <- Differences3X3[5,]
+Differences3X3[3,] <- (colSums(Differences3X3[2:4,])/3)
+
+Differences<- abs(Differences3X3)
+heatmap.2(Differences,
+  main = "3x3 Kirsch Averaged ",
+  xlab = "Time",
+  ylab = "Frequency",
+  key=T, 
+  keysize=1.5, 
+  key.title = NA,
+  symkey=TRUE, 
+  notecol="black",            
+  density.info="histogram",     
+  trace="none",               
+  margins =c(4,3),            
+  dendrogram="none",           
+  Rowv = FALSE,
+  Colv = FALSE,
+  srtCol = 1,
+  cexRow = 1.0,
+  breaks= 63,
+  adjCol = c(0.5,1),
+  col= grey.colors(62, start= 0.9, end=0.1, gamma=.7)
+  )
 ```
 
 
@@ -177,7 +201,7 @@ for(i in 3:68){
 
 Differences<- abs(Differences5X5)
 heatmap.2(Differences,
-  main = "Heatmap ",
+  main = "5x5 Kirsch ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
