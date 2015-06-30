@@ -1,10 +1,9 @@
 ---
-title: "Haar Heatmap Masking/NN prep (Sobel)"
+title: "Haar Heatmap Masking:NN Prep (Kirsch)"
 author: "Zach Diener"
-date: "June 29, 2015"
+date: "June 30, 2015"
 output: html_document
 ---
-
 
 #Sobel Operators
 ```{r}
@@ -110,46 +109,151 @@ heatmap.2(Differences,
 
 plot(s, main = "Simulation Data", xlab= "Time", ylab="Brightness Level", xlim=c(7,70), ylim= c(14,28),type = "l", col = "red")
 ```
-#Data Prep For Neural Network (Sobel Operators)
+#Data Prep For Neural Network (Kirsch Operators)
 
-#Sobel Gradient 3x3
+#Kirsch Gradient 3x3
 ```{r}
-horizx<- t(as.matrix(c(1,0,-1,2,0,-2,1,0,-1)))
+#Direction 1
+horiz1<- t(as.matrix(c(5,5,5,-3,0,-3,-3,-3,-3)))
 
 a<- matrix(c(0),3,3)
 k<-2
-Differences3X3x <- Differences
+Differences3X3_1 <- Differences
 
 for(n in 2:4){
   for(i in 2:69){
       for (r in (n-1):(n+1)){
           a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
               Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3x[n,i] <- horizx %*% Z
+                  Differences3X3_1[n,i] <- horiz1 %*% Z
     }
   }
 }
 
-horizy<- t(as.matrix(c(-1,-2,-1,0,0,0,1,2,1)))
+#Direction 2
+horiz2<- t(as.matrix(c(5,5,-3,5,0,-3,-3,-3,-3)))
 
-
-Differences3X3y <- Differences
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_2 <- Differences
 
 for(n in 2:4){
   for(i in 2:69){
       for (r in (n-1):(n+1)){
           a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
               Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3y[n,i] <- horizy %*% Z
+                  Differences3X3_2[n,i] <- horiz2 %*% Z
     }
   }
 }
 
-Gradient3X3 <- sqrt((Differences3X3x)^2+(Differences3X3y)^2)
+#Direction 3
+horiz3<- t(as.matrix(c(5,-3,-3,5,0,-3,5,-3,-3)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_3 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_3[n,i] <- horiz3 %*% Z
+    }
+  }
+}
+
+#Direction 4
+horiz4<- t(as.matrix(c(-3,-3,-3,5,0,-3,5,5,-3)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_4 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_4[n,i] <- horiz4 %*% Z
+    }
+  }
+}
+
+#Direction 5
+horiz5<- t(as.matrix(c(-3,-3,-3,-3,0,-3,5,5,5)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_5 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_5[n,i] <- horiz5 %*% Z
+    }
+  }
+}
+
+#Direction 6
+horiz6<- t(as.matrix(c(-3,-3,-3,-3,0,5,-3,5,5)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_6 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_6[n,i] <- horiz6 %*% Z
+    }
+  }
+}
+
+#Direction 7
+horiz7<- t(as.matrix(c(-3,-3,5,-3,0,5,-3,-3,5)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_7 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_7[n,i] <- horiz7 %*% Z
+    }
+  }
+}
+
+#Direction 8
+horiz8<- t(as.matrix(c(-3,5,5,-3,0,5,-3,-3,-3)))
+
+a<- matrix(c(0),3,3)
+k<-2
+Differences3X3_8 <- Differences
+
+for(n in 2:4){
+  for(i in 2:69){
+      for (r in (n-1):(n+1)){
+          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+              Z<-c(a[k-1,],a[k,],a[k+1,])
+                  Differences3X3_8[n,i] <- horiz8 %*% Z
+    }
+  }
+}
+
+Gradient3X3 <- sqrt((Differences3X3_1)^2+(Differences3X3_2)^2+(Differences3X3_3)^2+(Differences3X3_4)^2+(Differences3X3_5)^2+(Differences3X3_6)^2+(Differences3X3_7)^2+(Differences3X3_8)^2)
   
 Differences<- abs(Gradient3X3)
 heatmap.2(Differences,
-  main = "3x3 Sobel Gradient ",
+  main = "3x3 Kirsch Gradient ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
@@ -170,15 +274,15 @@ heatmap.2(Differences,
   col= grey.colors(62, start= 0.9, end=0.1, gamma=.7)
   )
 
+Gradient3X3[3,] <- (colSums(Gradient3X3[2:4,])/3)
 Gradient3X3[1,] <- c(0)
 Gradient3X3[2,] <- c(0)
 Gradient3X3[4,] <- c(0)
 Gradient3X3[5,] <- c(0)
-Gradient3X3[3,] <- (colSums(Gradient3X3[2:4,])/3)
 
 Differences<- abs(Gradient3X3)
 heatmap.2(Differences,
-  main = "3x3 Sobel Gradient Averaged ",
+  main = "3x3 Kirsch Gradient Averaged ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
@@ -200,13 +304,13 @@ heatmap.2(Differences,
   )
 ```
 
-#Sobel Gradient 5x5
+#Kirsch Gradient 5x5
 ```{r}
 k<-3
 Differences5X5x <- Differences
 a<- matrix(c(0),5,5)
 
-horizx<- t(as.matrix(c(1,2,0,-2,-1,4,8,0,-8,-4,6,12,0,-6,-12,4,8,0,-8,-4,1,2,0,-2,-1)))
+horizx<- t(as.matrix(c(9,9,9,9,9,9,5,5,5,9,-7,-3,0,-3,-7,-7,-3,-3,-3,-7,-7,-7,-7,-7,-7)))
 
 
 for(i in 3:68){
@@ -220,7 +324,7 @@ for(i in 3:68){
 Differences5X5y <- Differences
 a<- matrix(c(0),5,5)
 
-horizy<- t(as.matrix(c(-1,-4,-6,-4,-1,-2,-8,-12,-8,-2,0,0,0,0,0,2,8,12,8,2,1,4,6,4,1)))
+horizy<- t(as.matrix(c(-7,-7,-7,9,9,-7,-3,-3,5,9,-7,-3,0,5,9,-7,-3,-3,5,9,-7,-7,-7,9,9)))
 
 
 for(i in 3:68){
@@ -255,4 +359,3 @@ heatmap.2(Differences,
   adjCol = c(0.5,1),
   col= grey.colors(62, start= 0.9, end=0.1, gamma=.7)
   )
-```
