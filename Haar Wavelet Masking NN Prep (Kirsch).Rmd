@@ -251,8 +251,8 @@ for(n in 2:4){
 
 Gradient3X3 <- sqrt((Differences3X3_3)^2+(Differences3X3_4)^2+(Differences3X3_7)^2+(Differences3X3_8)^2)
   
-Differences<- abs(Gradient3X3)
-heatmap.2(Differences,
+Differences2<- abs(Gradient3X3)
+heatmap.2(Differences2,
   main = "3x3 Kirsch Gradient ",
   xlab = "Time",
   ylab = "Frequency",
@@ -280,8 +280,8 @@ Gradient3X3[2,] <- c(0)
 Gradient3X3[4,] <- c(0)
 Gradient3X3[5,] <- c(0)
 
-Differences<- abs(Gradient3X3)
-heatmap.2(Differences,
+Differences3<- abs(Gradient3X3)
+heatmap.2(Differences3,
   main = "3x3 Kirsch Gradient Averaged ",
   xlab = "Time",
   ylab = "Frequency",
@@ -337,8 +337,8 @@ for(i in 3:68){
 
 Gradient5X5 <- sqrt((Differences5X5x)^2+(Differences5X5y)^2)
 
-Differences<- abs(Gradient5X5)
-heatmap.2(Differences,
+Differences4<- abs(Gradient5X5)
+heatmap.2(Differences4,
   main = "5x5 Kirsch Gradient ",
   xlab = "Time",
   ylab = "Frequency",
