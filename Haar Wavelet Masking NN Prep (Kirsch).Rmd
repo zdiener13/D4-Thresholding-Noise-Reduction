@@ -114,38 +114,38 @@ plot(s, main = "Simulation Data", xlab= "Time", ylab="Brightness Level", xlim=c(
 #Kirsch Gradient 3x3
 ```{r}
 #Direction 1
-horiz1<- t(as.matrix(c(5,5,5,-3,0,-3,-3,-3,-3)))
+#horiz1<- t(as.matrix(c(5,5,5,-3,0,-3,-3,-3,-3)))
 
-a<- matrix(c(0),3,3)
-k<-2
-Differences3X3_1 <- Differences
+#a<- matrix(c(0),3,3)
+#k<-2
+#Differences3X3_1 <- Differences
 
-for(n in 2:4){
-  for(i in 2:69){
-      for (r in (n-1):(n+1)){
-          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
-              Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3_1[n,i] <- horiz1 %*% Z
-    }
-  }
-}
+#for(n in 2:4){
+#  for(i in 2:69){
+#      for (r in (n-1):(n+1)){
+#          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+#              Z<-c(a[k-1,],a[k,],a[k+1,])
+#                  Differences3X3_1[n,i] <- horiz1 %*% Z
+#    }
+#  }
+#}
 
 #Direction 2
-horiz2<- t(as.matrix(c(5,5,-3,5,0,-3,-3,-3,-3)))
+#horiz2<- t(as.matrix(c(5,5,-3,5,0,-3,-3,-3,-3)))
 
-a<- matrix(c(0),3,3)
-k<-2
-Differences3X3_2 <- Differences
+#a<- matrix(c(0),3,3)
+#k<-2
+#Differences3X3_2 <- Differences
 
-for(n in 2:4){
-  for(i in 2:69){
-      for (r in (n-1):(n+1)){
-          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
-              Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3_2[n,i] <- horiz2 %*% Z
-    }
-  }
-}
+#for(n in 2:4){
+#  for(i in 2:69){
+#      for (r in (n-1):(n+1)){
+#          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+#              Z<-c(a[k-1,],a[k,],a[k+1,])
+#                  Differences3X3_2[n,i] <- horiz2 %*% Z
+#    }
+#  }
+#}
 
 #Direction 3
 horiz3<- t(as.matrix(c(5,-3,-3,5,0,-3,5,-3,-3)))
@@ -182,38 +182,38 @@ for(n in 2:4){
 }
 
 #Direction 5
-horiz5<- t(as.matrix(c(-3,-3,-3,-3,0,-3,5,5,5)))
+#horiz5<- t(as.matrix(c(-3,-3,-3,-3,0,-3,5,5,5)))
 
-a<- matrix(c(0),3,3)
-k<-2
-Differences3X3_5 <- Differences
+#a<- matrix(c(0),3,3)
+#k<-2
+#Differences3X3_5 <- Differences
 
-for(n in 2:4){
-  for(i in 2:69){
-      for (r in (n-1):(n+1)){
-          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
-              Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3_5[n,i] <- horiz5 %*% Z
-    }
-  }
-}
+#for(n in 2:4){
+#  for(i in 2:69){
+#      for (r in (n-1):(n+1)){
+#          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+#              Z<-c(a[k-1,],a[k,],a[k+1,])
+#                  Differences3X3_5[n,i] <- horiz5 %*% Z
+#   }
+#  }
+#}
 
 #Direction 6
-horiz6<- t(as.matrix(c(-3,-3,-3,-3,0,5,-3,5,5)))
+#horiz6<- t(as.matrix(c(-3,-3,-3,-3,0,5,-3,5,5)))
 
-a<- matrix(c(0),3,3)
-k<-2
-Differences3X3_6 <- Differences
+#a<- matrix(c(0),3,3)
+#k<-2
+#Differences3X3_6 <- Differences
 
-for(n in 2:4){
-  for(i in 2:69){
-      for (r in (n-1):(n+1)){
-          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
-              Z<-c(a[k-1,],a[k,],a[k+1,])
-                  Differences3X3_6[n,i] <- horiz6 %*% Z
-    }
-  }
-}
+#for(n in 2:4){
+#  for(i in 2:69){
+#      for (r in (n-1):(n+1)){
+#          a[r-(n-2),] <-c(Differences[r,(i-1):(i+1)]) 
+#              Z<-c(a[k-1,],a[k,],a[k+1,])
+#                  Differences3X3_6[n,i] <- horiz6 %*% Z
+#    }
+#  }
+#}
 
 #Direction 7
 horiz7<- t(as.matrix(c(-3,-3,5,-3,0,5,-3,-3,5)))
@@ -249,7 +249,7 @@ for(n in 2:4){
   }
 }
 
-Gradient3X3 <- sqrt((Differences3X3_1)^2+(Differences3X3_2)^2+(Differences3X3_3)^2+(Differences3X3_4)^2+(Differences3X3_5)^2+(Differences3X3_6)^2+(Differences3X3_7)^2+(Differences3X3_8)^2)
+Gradient3X3 <- sqrt((Differences3X3_3)^2+(Differences3X3_4)^2+(Differences3X3_7)^2+(Differences3X3_8)^2)
   
 Differences<- abs(Gradient3X3)
 heatmap.2(Differences,
@@ -339,7 +339,7 @@ Gradient5X5 <- sqrt((Differences5X5x)^2+(Differences5X5y)^2)
 
 Differences<- abs(Gradient5X5)
 heatmap.2(Differences,
-  main = "5x5 Sobel Gradient ",
+  main = "5x5 Kirsch Gradient ",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
