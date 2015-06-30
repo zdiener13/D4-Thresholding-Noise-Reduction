@@ -235,7 +235,44 @@ Gradient5X5 <- sqrt((Differences5X5x)^2+(Differences5X5y)^2)
 
 Differences<- abs(Gradient5X5)
 heatmap.2(Differences,
-  main = "5x5 Sobel Gradient ",
+  main = "5x5 Sobel Gradient",
+  xlab = "Time",
+  ylab = "Frequency",
+  key=T, 
+  keysize=1.5, 
+  key.title = NA,
+  symkey=TRUE, 
+  notecol="black",            
+  density.info="histogram",     
+  trace="none",               
+  margins =c(4,3),            
+  dendrogram="none",           
+  Rowv = FALSE,
+  Colv = FALSE,
+  srtCol = 1,
+  cexRow = 1.0,
+  breaks= 63,
+  adjCol = c(0.5,1),
+  col= grey.colors(62, start= 0.9, end=0.1, gamma=.7)
+  )
+
+Arow_1 <- Gradient5X5[3,2:70]
+sigma <- (mad(Arow_1))/.6745
+#print(mad(Arow_1))
+Thresh<- sigma * (sqrt(2* log(length(Arow_1))))
+
+for (i in 3:3){
+  high <- Gradient5X5[i,] >= Thresh
+  mid <- Gradient5X5[i,] < Thresh
+  low <- Gradient5X5[i,] <= -Thresh
+  Gradient5X5[i,high] <- (Gradient5X5[i,high] <- (Gradient5X5[i,high]-Thresh))
+  Gradient5X5[i,mid] <- (Gradient5X5[i,mid] <- 0)
+  Gradient5X5[i,low] <- (Gradient5X5[i,low] <- (Gradient5X5[i,low]+Thresh))
+}
+
+Differences<- abs(Gradient5X5)
+heatmap.2(Differences,
+  main = "5x5 Sobel Gradient With Thresholding",
   xlab = "Time",
   ylab = "Frequency",
   key=T, 
